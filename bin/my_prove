@@ -1,6 +1,7 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 use strict;
+use warnings;
 use App::Prove;
 use Getopt::Long;
 
@@ -50,6 +51,7 @@ sub process_args {
             'version|V'     => \$opts->{version},
             'help|H'        => \$opts->{help},
             'man|m'         => \$opts->{man},
+            'defaults-group-suffix|group|G=s' => \$opts->{'defaults-group-suffix'},
         );
     };
 
@@ -70,7 +72,7 @@ sub process_args {
             ('--mytap-option' => "$_=$opts->{$_}")
         } grep {
             $opts->{$_}
-        } qw(mysql database user password host port)),
+        } qw(mysql database user password host port defaults-group-suffix)),
     );
 
     $self->{extensions} ||= ['.my'];
@@ -201,6 +203,10 @@ Options that take arguments:
  -p,  --password        The password to use when connecting.
  -h,  --host            Host to which to connect.
  -P,  --port            Port to which to connect.
+ -G,  --group, --defaults-group-suffix
+                        Read default username/password/database from the
+                        specifiedF</etc/my.cnf> / F<.my.cnf> group.
+
 
 =head1 Options Details
 
@@ -266,6 +272,19 @@ Connect to the MySQL server on the given host.
   my_prove -P 666
 
 The TCP/IP port number to use for the connection.
+
+=item C<-G>
+
+=item C<--group>
+
+=item C<--defaults-group-suffix>
+
+  my_prove --group mygroup
+  my_prove -G root
+
+Passes the specified group through to the C<--defaults-group-suffix>
+parameter for mysql, allowing F</etc/my.cnf> or the F<.my.cnf> to
+contain more than one set of username/password/database specifications.
 
 =back
 

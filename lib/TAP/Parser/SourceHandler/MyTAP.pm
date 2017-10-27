@@ -283,6 +283,11 @@ sub make_iterator {
     my $config = $source->config_for('MyTAP');
 
     my @command = ( $config->{mysql} || 'mysql' );
+    # Special-case: if --defaults-group-suffix is specified,
+    # it should go first in the list of parameters
+    if (my $group = $config->{'defaults-group-suffix'}) {
+      push @command, "--defaults-group-suffix=$group";
+    }
     push @command, qw(
       --disable-pager
       --batch
