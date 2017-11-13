@@ -1,5 +1,4 @@
 #!/usr/bin/env perl
-
 use strict;
 use warnings;
 use App::Prove;
@@ -48,9 +47,9 @@ sub process_args {
             'password|p=s'  => \$opts->{password},
             'host|h=s'      => \$opts->{host},
             'port|P=s'      => \$opts->{port},
-            'version|V'     => \$opts->{version},
-            'help|H'        => \$opts->{help},
-            'man|m'         => \$opts->{man},
+            'version|V'     => \$self->{show_version},
+            'help|H'        => \$self->{show_help},
+            'man|m'         => \$self->{show_man},
             'defaults-group-suffix|group|G=s' => \$opts->{'defaults-group-suffix'},
         );
     };
@@ -173,7 +172,7 @@ Boolean options:
       --parse           Show full list of TAP parse errors, if any.
       --directives      Only show results with TODO or SKIP directives.
       --timer           Print elapsed time after each test.
-      --trap            Trap C<Ctrl-C> and print summary on interrupt.
+      --trap            Trap Ctrl-C and print summary on interrupt.
       --normalize       Normalize TAP output in verbose output
  -T                     Enable tainting checks.
  -t                     Enable tainting warnings.
@@ -197,15 +196,16 @@ Options that take arguments:
  -j,  --jobs N          Run N test jobs in parallel (try 9.)
       --state=opts      Control prove's persistent state.
       --rc=rcfile       Process options from rcfile
- -b   --mysql-bin       Location of the C<mysql> client.
+ -b   --mysql-bin       Location of the mysql client.
  -D,  --database        Database to use.
  -u,  --user            User with which to connect.
  -p,  --password        The password to use when connecting.
  -h,  --host            Host to which to connect.
  -P,  --port            Port to which to connect.
- -G,  --group, --defaults-group-suffix
+ -G,  --group,
+      --defaults-group-suffix
                         Read default username/password/database from the
-                        specifiedF</etc/my.cnf> / F<.my.cnf> group.
+                        specified /etc/my.cnf / .my.cnf group.
 
 
 =head1 Options Details
@@ -252,7 +252,7 @@ The MySQL user name to use when connecting to the server.
 
 The password to use when connecting to the server. Specifying a password on
 the command line should be considered insecure. You can use a MySQL option
-file such as F</etc/my.cnf> or the F<.my.cnf> file in your home directory, to
+file such as C</etc/my.cnf> or the C<.my.cnf> file in your home directory, to
 avoid giving the password on the command line.
 
 =item C<-h>
@@ -283,7 +283,7 @@ The TCP/IP port number to use for the connection.
   my_prove -G root
 
 Passes the specified group through to the C<--defaults-group-suffix>
-parameter for mysql, allowing F</etc/my.cnf> or the F<.my.cnf> to
+parameter for mysql, allowing C</etc/my.cnf> or the C<.my.cnf> file in your home directory to
 contain more than one set of username/password/database specifications.
 
 =back
